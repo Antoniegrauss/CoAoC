@@ -1,11 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
-#include <numeric>
 #include <cassert>
-#include <functional>
-#include <filesystem>
 #include <cmath>
 
 using Strings = std::vector<std::string>;
@@ -23,7 +19,7 @@ Strings read_input(const std::string &filename)
     return ranges;
 }
 
-Longs numbers(const Strings &ranges)
+Longs expand_ranges(const Strings &ranges)
 {
     Longs IDs;
 
@@ -99,16 +95,16 @@ int main()
 {
 
     // Print
-    auto instructies = numbers(read_input("input/input"));
-    // std::cout << "Read " << instructies.size() << " instructions\n";
+    auto instructions = expand_ranges(read_input("input/input"));
+    // std::cout << "Read " << instructions.size() << " instructions\n";
 
-    // for (const auto &s : instructies)
+    // for (const auto &s : instructions)
     //     std::cout << s << std::endl;
 
-    long answer1 = part1(instructies);
+    long answer1 = part1(instructions);
     std::cout << "Part 1: " << answer1 << std::endl;
 
-    long answer2 = part2(instructies);
+    long answer2 = part2(instructions);
     std::cout << "Part 2: " << answer2 << std::endl;
     return 0;
 }
