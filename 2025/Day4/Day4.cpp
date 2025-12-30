@@ -6,8 +6,8 @@
 #include <array>
 
 using Strings = std::vector<std::string>;
-using Booleans = std::vector<std::vector<bool>>;
-using Ints = std::vector<std::vector<int>>;
+using Boolgrid = std::vector<std::vector<bool>>;
+using Intgrid = std::vector<std::vector<int>>;
 
 Strings read_input(const std::string &filename)
 {
@@ -15,18 +15,15 @@ Strings read_input(const std::string &filename)
     assert(in && "Could not open input file");
 
     Strings lines;
-    std::string s;
-    while (std::getline(in, s))
-    {
-        if (!s.empty())
-            lines.push_back(s);
-    }
+    for (std::string line; std::getline(in, line);)
+        if (!line.empty())
+            lines.push_back(line);
 
     return lines;
 }
-Booleans find_at(const Strings &instructions)
+Boolgrid at_mask(const Strings &instructions)
 {
-    Booleans rolls;
+    Boolgrid mask;
 
     for (const auto &str : instructions)
     {
@@ -35,18 +32,18 @@ Booleans find_at(const Strings &instructions)
         {
             row.push_back(c == '@');
         }
-        rolls.push_back(row);
+        mask.push_back(row);
     }
 
-    return rolls;
+    return mask;
 }
 
-Ints find_adjacent(const Booleans &rolls)
+Intgrid find_adjacent(const Boolgrid &rolls)
 {
     size_t rows = rolls.size();
     size_t columns = rolls[0].size();
 
-    Ints adjacent(rows, std::vector<int>(columns, 0));
+    Intgrid adjacent(rows, std::vector<int>(columns, 0));
     for (size_t i = 0; i < rows; ++i)
     {
         for (size_t j = 0; j < columns; ++j)
@@ -70,7 +67,7 @@ Ints find_adjacent(const Booleans &rolls)
     return adjacent;
 }
 
-int part1(const Ints &adj_rolls, const Booleans &rolls)
+int part1(const Intgrid &adj_rolls, const Boolgrid &rolls)
 {
     int result = 0;
     for (size_t i = 0; i < rolls.size(); ++i)
@@ -87,13 +84,16 @@ int part1(const Ints &adj_rolls, const Booleans &rolls)
 int main()
 {
     // Print
-    auto instructions = read_input("input/testinput");
-    // for (const auto &s : instructions)
+    const auto input = read_input("input/testinput");
+
+    // for (const auto &s : input)
     //     std::cout << s << std::endl;
-    int answer1 = part1(find_adjacent(find_at(instructions)), find_at(instructions));
+
+    const auto at_locations = at_mask(input);
+    int answer1 = part1(find_adjacent(at_locations), at_locations);
     std::cout << "Part 1: " << answer1 << std::endl;
 
-    // long answer2 = part2(instructions);
+    // long answer2 = part2(input);
     // std::cout << "Part 2: " << answer2 << std::endl;
     return 0;
 }
