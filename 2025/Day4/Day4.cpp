@@ -81,10 +81,39 @@ int part1(const Intgrid &adj_rolls, const Boolgrid &rolls)
     return result;
 }
 
+int part2(Boolgrid rolls)
+{
+    int result = 0;
+    Boolgrid current = rolls;
+
+    while (true)
+    {
+        Intgrid adj = find_adjacent(current);
+        Boolgrid next = current;
+        int result_last_round = result;
+
+        for (size_t i = 0; i < current.size(); ++i)
+        {
+            for (size_t j = 0; j < current[i].size(); ++j)
+            {
+                if (adj[i][j] < 4 && current[i][j])
+                {
+                    ++result;
+                    current[i][j] = 0;
+                }
+            }
+        }
+        if (result_last_round == result)
+            break;
+        rolls = current;
+    }
+    return result;
+}
+
 int main()
 {
     // Print
-    const auto input = read_input("input/testinput");
+    const auto input = read_input("input/input");
 
     // for (const auto &s : input)
     //     std::cout << s << std::endl;
@@ -93,7 +122,7 @@ int main()
     int answer1 = part1(find_adjacent(at_locations), at_locations);
     std::cout << "Part 1: " << answer1 << std::endl;
 
-    // long answer2 = part2(input);
-    // std::cout << "Part 2: " << answer2 << std::endl;
+    int answer2 = part2(at_locations);
+    std::cout << "Part 2: " << answer2 << std::endl;
     return 0;
 }
