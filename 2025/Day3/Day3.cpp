@@ -14,7 +14,8 @@ Strings read_input(const std::string &filename)
 
     Strings ranges;
     for (std::string s; std::getline(in, s);)
-        ranges.push_back(s);
+        if (!s.empty())
+            ranges.push_back(s);
 
     return ranges;
 }
@@ -48,7 +49,28 @@ int part1(const Strings &input)
     {
         auto [pos, jolts] = find_position(bank.substr(0, bank.size() - 1));
         jolts = jolts * 10 + find_position(bank.substr(pos + 1)).value;
-        std::cout << jolts << std::endl;
+        // std::cout << jolts << std::endl;
+        totaloutputjoltage += jolts;
+    }
+
+    return totaloutputjoltage;
+}
+
+long part2(const Strings &input)
+{
+    long totaloutputjoltage = 0;
+    for (const std::string &bank : input)
+    {
+        int start = 0;
+        long jolts = 0;
+        int batterycount = 12;
+        for (int i = 1; i <= batterycount; ++i)
+        {
+            auto [pos, val] = find_position(bank.substr(start, bank.size() - batterycount + i - start));
+            jolts = jolts * 10 + val;
+            start += pos + 1;
+        }
+        // std::cout << jolts << std::endl;
         totaloutputjoltage += jolts;
     }
 
@@ -58,14 +80,14 @@ int part1(const Strings &input)
 int main()
 {
     // Print
-    auto instructions = read_input("input/testinput");
-    for (const auto &s : instructions)
-        std::cout << s << std::endl;
+    auto instructions = read_input("input/input");
+    // for (const auto &s : instructions)
+    //     std::cout << s << std::endl;
 
     int answer1 = part1(instructions);
     std::cout << "Part 1: " << answer1 << std::endl;
 
-    // long answer2 = part2(instructions);
-    // std::cout << "Part 2: " << answer2 << std::endl;
+    long answer2 = part2(instructions);
+    std::cout << "Part 2: " << answer2 << std::endl;
     return 0;
 }
