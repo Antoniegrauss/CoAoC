@@ -5,19 +5,20 @@
 #include <cmath>
 
 using Strings = std::vector<std::string>;
-using Longs = std::vector<long>;
 
 Strings read_input(const std::string &filename)
 {
     std::ifstream in(filename + ".txt");
     assert(in && "Could not open input file");
 
-    Strings ranges;
-    for (std::string s; std::getline(in, s);)
+    Strings lines;
+    std::string s;
+    while (std::getline(in, s))
+    {
         if (!s.empty())
-            ranges.push_back(s);
-
-    return ranges;
+            lines.push_back(s);
+    }
+    return lines;
 }
 
 struct Result
