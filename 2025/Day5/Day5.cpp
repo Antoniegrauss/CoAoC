@@ -75,12 +75,14 @@ int part1(const Strings &lines)
     return result;
 }
 
-Ranges mergeOverlappingRanges(const Ranges &ranges)
+Ranges mergeOverlap(const Ranges &ranges)
 {
+    if (ranges.empty())
+        return {};
     Ranges merged;
     merged.push_back(ranges.front());
 
-    for (size_t i = 1; i < ranges.size(); ++i)
+    for (std::size_t i = 1; i < ranges.size(); ++i)
     {
         Range &last = merged.back();
         const Range &current = ranges[i];
@@ -106,8 +108,7 @@ Ranges normalizeRanges(Ranges &ranges)
                   return a.min < b.min;
               });
 
-    ranges = mergeOverlappingRanges(ranges);
-    return ranges;
+    return mergeOverlap(ranges);
 }
 
 long part2(const Strings &lines)
