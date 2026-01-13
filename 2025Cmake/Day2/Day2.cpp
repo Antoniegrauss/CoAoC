@@ -4,20 +4,10 @@
 #include <cassert>
 #include <cmath>
 
+#include "read_input.hpp"
+
 using Strings = std::vector<std::string>;
 using Longs = std::vector<long>;
-
-Strings read_input(const std::string &filename)
-{
-    std::ifstream in(filename + ".txt");
-    assert(in && "Could not open input file");
-
-    Strings ranges;
-    for (std::string s; std::getline(in, s, ',');)
-        ranges.push_back(s);
-
-    return ranges;
-}
 
 Longs expand_ranges(const Strings &ranges)
 {
